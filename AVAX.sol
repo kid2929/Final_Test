@@ -7,7 +7,7 @@
 */
 
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -21,41 +21,41 @@ contract DegenToken is ERC20, Ownable {
     struct StoreItem {
         string name;
         uint256 price;
-    }
+      }
 
     mapping(uint256 => StoreItem) public storeItems;
     uint256 public totalItems;
 
-    constructor() ERC20("Degen", "DGN") Ownable(msg.sender) {
+    constructor(address initialOwner) ERC20("Degen", "DGN") Ownable(initialOwner) {
         totalItems = 0;
-    }
+  }
 
     // Mint new tokens
-    function mint(address account, uint256 amount) external onlyOwner {
+    function mintTK(address account, uint256 amount) external onlyOwner {
         _mint(account, amount);
-    }
+      }
 
     // Transfer tokens to another address
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         require(recipient != address(0), "ERC20: transfer to the zero address"); // Ensure recipient is not the zero address
         _transfer(_msgSender(), recipient, amount);
         return true;
-    }
+ }
 
     // Redeem tokens for in-game items
-    function redeem(uint256 amount) external {
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance"); // Check if sender has enough balance
+    function redeemTokens(uint256 amount) external {
+        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens"); // Check if sender has enough balance
         _burn(msg.sender, amount);
         emit TokensRedeemed(msg.sender, amount);
         // Implement logic for redeeming tokens for in-game items
-    }
+       }
 
     // Burn tokens (destroy them irreversibly)
     function burn(uint256 amount) external {
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance"); // Check if sender has enough balance
+        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens"); // Check if sender has enough balance
         _burn(msg.sender, amount);
-        emit TokensBurned(msg.sender, amount);
-    }
+        emit TokensBurned(msg.sender, amount);  
+}
 
     // Check balance of the caller
     function getBalance() external view returns (uint256) {
@@ -63,11 +63,13 @@ contract DegenToken is ERC20, Ownable {
     }
 
     // Add an item to the store
-    function addItemToStore(string memory name, uint256 price) external onlyOwner {
+
+    function addStoreItem(string memory name, uint256 price) external onlyOwner {
         totalItems++;
         storeItems[totalItems] = StoreItem(name, price);
         emit ItemAdded(totalItems, name, price);
-    }
+}
+
 
     // Remove an item from the store
     function removeItemFromStore(uint256 itemId) external onlyOwner {
@@ -82,8 +84,7 @@ contract DegenToken is ERC20, Ownable {
         for (uint256 i = 1; i <= totalItems; i++) {
             itemList = string(abi.encodePacked(itemList, uintToString(i), ". ", storeItems[i].name, " - ", uintToString(storeItems[i].price), " DGN\n"));
         }
-        return itemList;
-    }
+        return itemList; }
 
     // Convert uint to string
     function uintToString(uint256 v) internal pure returns (string memory str) {
