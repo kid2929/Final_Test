@@ -31,7 +31,7 @@ contract DegenToken is ERC20, Ownable {
   }
 
     // Mint new tokens
-    function mintTK(address account, uint256 amount) external onlyOwner {
+    function mintTokens(address account, uint256 amount) external onlyOwner {
         _mint(account, amount);
       }
 
@@ -51,7 +51,7 @@ contract DegenToken is ERC20, Ownable {
        }
 
     // Burn tokens (destroy them irreversibly)
-    function burn(uint256 amount) external {
+    function burnTokens(uint256 amount) external {
         require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens"); // Check if sender has enough balance
         _burn(msg.sender, amount);
         emit TokensBurned(msg.sender, amount);  
