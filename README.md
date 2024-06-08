@@ -1,36 +1,35 @@
 # Degen Token (DGN)
 
 ## Overview
-Degen Token is a Solidity smart contract that implements a basic ERC20 token, "Degen" (symbol: DGN), designed for in-game usage. It provides functionalities for creating, managing, and utilizing tokens within a gaming ecosystem.
+Degen ERC-20 Token is a cryptocurrency token deployed on the Avalanche network for Degen Gaming. This token adheres to the ERC-20 standard and provides the following functionalities:
 
-## Features
-- **Minting New Tokens**: The contract allows the owner to create and distribute new tokens as rewards.
-- **Transferring Tokens**: Players can transfer tokens to other addresses within the platform.
-- **Redeeming Tokens**: Players can exchange tokens for in-game items available in the store.
-- **Checking Token Balance**: Players can easily check their token balance at any time.
-- **Burning Tokens**: Users can permanently destroy tokens they no longer need.
+## Functionality
+1. **Minting new tokens**: The platform owner can create new tokens and distribute them to players as rewards. Only the owner can mint tokens.
+2. **Transferring tokens**: Players can transfer their tokens to others.
+3. **Redeeming tokens**: Players can redeem their tokens for items in the in-game store.
+4. **Checking token balance**: Players can check their token balance at any time.
+5. **Burning tokens**: Anyone can burn tokens that they own, which are no longer needed.
 
-## Usage
-- **Minting**: Only the contract owner can mint new tokens using the `mint` function.
-- **Transferring**: Players can transfer tokens to others using the standard ERC20 `transfer` function.
-- **Redeeming**: Tokens can be redeemed for in-game items by calling the `redeem` function.
-- **Burning**: Tokens can be permanently removed from circulation by burning them with the `burn` function.
-- **Checking Balance**: Players can check their token balance by calling the `getBalance` function.
-- **Managing Store Items**: The owner can add and remove items from the in-game store using the provided functions.
+## Contract Details
+- **Name**: Degen
+- **Symbol**: DGN
+- **Network**: Avalanche
 
-## Implementation Details
-- **ERC20 Compliance**: Built on OpenZeppelin's ERC20 standard, ensuring compatibility with existing tools and platforms.
-- **Owner Control**: The contract includes access control through the Ownable contract, restricting certain functions to the owner.
-- **Event Emission**: Events are emitted for token redemptions, burns, and store item management, enabling easy tracking of transactions.
-- **Efficient String Conversion**: Utility functions are provided to convert uint to string for displaying store item details efficiently.
+## Implementation
+The ERC-20 token contract follows the ERC-20 standard closely to ensure interoperability with other ERC-20 tokens, wallets, and exchanges. Additional functionalities and security measures have been added to ensure the token's effectiveness and security for Degen Gaming's reward program.
 
-## Getting Started
-To deploy and interact with the Degen Token contract, you'll need a Solidity development environment and knowledge of Ethereum smart contracts.
+## Testing
+The smart contract has been thoroughly tested to ensure that all functionalities work as expected. All tests have passed successfully.
+
+## Deployment
+The smart contract has been deployed to the Avalanche Fuji Testnet for testing purposes.
+
+## Verification
+The smart contract has been verified on Snowtrace to provide transparency and ensure trustworthiness.
+
+## Access
+The smart contract address on the Avalanche Fuji Testnet is "0x62B681d584f30ec21701821feFE22d566e349B26". Users can interact with the contract using compatible wallets and dApps.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-- OpenZeppelin for providing the ERC20 and Ownable contracts.
-- Ethereum community for valuable insights and contributions.
+This code is released under the MIT License.
 
