@@ -13,7 +13,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DegenToken is ERC20, Ownable {
-    event TokensRedeemed(address indexed redeemer, uint256 amount);
+    event TokensRedeemed(address indexed redeemer, uint256 amount, uint256 itemId);
     event TokensBurned(address indexed burner, uint256 amount);
     event ItemAdded(uint256 itemId, string name, uint256 price);
     event ItemRemoved(uint256 itemId);
@@ -28,34 +28,42 @@ contract DegenToken is ERC20, Ownable {
 
     constructor(address initialOwner) ERC20("Degen", "DGN") Ownable(initialOwner) {
         totalItems = 0;
-  }
+    }
 
     // Mint new tokens
     function mintTokens(address account, uint256 amount) external onlyOwner {
         _mint(account, amount);
-      }
+     }
 
     // Transfer tokens to another address
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        require(recipient != address(0), "ERC20: transfer to the zero address"); // Ensure recipient is not the zero address
+        require(recipient != address(0), "ERC20: transfer to the zero address");
         _transfer(_msgSender(), recipient, amount);
-        return true;
- }
+        return true;   }
 
     // Redeem tokens for in-game items
-    function redeemTokens(uint256 amount) external {
-        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens"); // Check if sender has enough balance
+    function redeemTokens(uint256 itemId) external {
+        require(storeItems[itemId].price > 0, "Invalid item ID");
+        uint256 amount = storeItems[itemId].price;
+        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens");
+
         _burn(msg.sender, amount);
-        emit TokensRedeemed(msg.sender, amount);
-        // Implement logic for redeeming tokens for in-game items
-       }
+        emit TokensRedeemed(msg.sender, amount, itemId);
+        deliverItem(msg.sender, itemId);
+    }
+
+    // Deliver the redeemed item to the player
+    function deliverItem(address redeemer, uint256 itemId) internal {
+        // Implement the logic to deliver the item to the player
+        // This could involve interacting with other contracts or game logic
+      }
 
     // Burn tokens (destroy them irreversibly)
     function burnTokens(uint256 amount) external {
-        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens"); // Check if sender has enough balance
+        require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens");
         _burn(msg.sender, amount);
-        emit TokensBurned(msg.sender, amount);  
-}
+        emit TokensBurned(msg.sender, amount);
+  }
 
     // Check balance of the caller
     function getBalance() external view returns (uint256) {
@@ -63,20 +71,18 @@ contract DegenToken is ERC20, Ownable {
     }
 
     // Add an item to the store
-
     function addStoreItem(string memory name, uint256 price) external onlyOwner {
         totalItems++;
         storeItems[totalItems] = StoreItem(name, price);
         emit ItemAdded(totalItems, name, price);
-}
-
+      }
 
     // Remove an item from the store
     function removeItemFromStore(uint256 itemId) external onlyOwner {
-        require(itemId > 0 && itemId <= totalItems, "Invalid item ID"); // Ensure itemId is valid
+        require(itemId > 0 && itemId <= totalItems, "Invalid item ID");
         delete storeItems[itemId];
         emit ItemRemoved(itemId);
-    }
+       }
 
     // Show available items in the store
     function showStoreItems() external view returns (string memory) {
@@ -84,7 +90,8 @@ contract DegenToken is ERC20, Ownable {
         for (uint256 i = 1; i <= totalItems; i++) {
             itemList = string(abi.encodePacked(itemList, uintToString(i), ". ", storeItems[i].name, " - ", uintToString(storeItems[i].price), " DGN\n"));
         }
-        return itemList; }
+        return itemList;
+     }
 
     // Convert uint to string
     function uintToString(uint256 v) internal pure returns (string memory str) {
@@ -96,10 +103,16 @@ contract DegenToken is ERC20, Ownable {
             v = v / 10;
             reversed[i++] = bytes1(uint8(48 + remainder));
         }
-        bytes memory s = new bytes(i); // i + 1 is inefficient, so -1 and +1 compensate
+        bytes memory s = new bytes(i);
         for (uint256 j = 0; j < i; j++) {
-            s[j] = reversed[i - j - 1]; // to reverse the string
+            s[j] = reversed[i - j - 1];
         }
-        str = string(s); // memory isn't implicitly convertible to storage
+        str = string(s);
     }
 }
+
+  
+
+   
+
+
