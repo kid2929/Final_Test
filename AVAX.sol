@@ -36,7 +36,7 @@ contract DegenToken is ERC20, Ownable {
      }
 
     // Transfer tokens to another address
-    function transfer(address recipient, uint256 amount) public override returns (bool) {
+    function transferTokens(address recipient, uint256 amount) public override returns (bool) {
         require(recipient != address(0), "ERC20: transfer to the zero address");
         _transfer(_msgSender(), recipient, amount);
         return true;   }
@@ -49,40 +49,37 @@ contract DegenToken is ERC20, Ownable {
 
         _burn(msg.sender, amount);
         emit TokensRedeemed(msg.sender, amount, itemId);
-        deliverItem(msg.sender, itemId);
-    }
+        deliverItem(msg.sender, itemId);   }
 
     // Deliver the redeemed item to the player
     function deliverItem(address redeemer, uint256 itemId) internal {
         // Implement the logic to deliver the item to the player
         // This could involve interacting with other contracts or game logic
-      }
+               }
 
     // Burn tokens (destroy them irreversibly)
     function burnTokens(uint256 amount) external {
         require(balanceOf(msg.sender) >= amount, "You do not have enough Degen Tokens");
         _burn(msg.sender, amount);
         emit TokensBurned(msg.sender, amount);
-  }
+     }
 
     // Check balance of the caller
     function getBalance() external view returns (uint256) {
         return balanceOf(msg.sender);
-    }
+        }
 
     // Add an item to the store
     function addStoreItem(string memory name, uint256 price) external onlyOwner {
         totalItems++;
         storeItems[totalItems] = StoreItem(name, price);
-        emit ItemAdded(totalItems, name, price);
-      }
+        emit ItemAdded(totalItems, name, price);  }
 
     // Remove an item from the store
     function removeItemFromStore(uint256 itemId) external onlyOwner {
         require(itemId > 0 && itemId <= totalItems, "Invalid item ID");
         delete storeItems[itemId];
-        emit ItemRemoved(itemId);
-       }
+        emit ItemRemoved(itemId);  }
 
     // Show available items in the store
     function showStoreItems() external view returns (string memory) {
@@ -110,9 +107,3 @@ contract DegenToken is ERC20, Ownable {
         str = string(s);
     }
 }
-
-  
-
-   
-
-
