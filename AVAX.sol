@@ -1,12 +1,3 @@
-/*
-1. Minting new tokens: The platform should be able to create new tokens and distribute them to players as rewards. Only the owner can mint tokens.
-2. Transferring tokens: Players should be able to transfer their tokens to others.
-3. Redeeming tokens: Players should be able to redeem their tokens for items in the in-game store.
-4. Checking token balance: Players should be able to check their token balance at any time.
-5. Burning tokens: Anyone should be able to burn tokens, that they own, that are no longer needed.
-*/
-
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
@@ -49,7 +40,7 @@ contract DegenToken is ERC20, Ownable {
     function mintTokens(address account, uint256 amount) external onlyOwner returns (bool) {
         _mint(account, amount);
         return true;
-     }
+         }
 
     /**
      * @dev Function to transfer tokens to another address.
@@ -130,7 +121,7 @@ contract DegenToken is ERC20, Ownable {
         totalItems++;
         storeItems[totalItems] = StoreItem(itemName, itemPrice);
         emit ItemAdded(totalItems, itemName, itemPrice);
-      }
+}
 
     /**
      * @dev Function to remove an item from the store.
@@ -167,7 +158,7 @@ contract DegenToken is ERC20, Ownable {
             uint256 remainder = v % 10;
             v = v / 10;
             reversed[i++] = bytes1(uint8(48 + remainder));
-        }
+          }
         bytes memory s = new bytes(i);
         for (uint256 j = 0; j < i; j++) {
             s[j] = reversed[i - j - 1];
